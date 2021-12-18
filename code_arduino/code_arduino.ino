@@ -43,12 +43,8 @@ void loop() {
 
 void serialEvent() {
   while (Serial.available()) {
-    // get the new byte:
     char inChar = (char)Serial.read();
-    // add it to the inputString:
     inputString += inChar;
-    // if the incoming character is a newline, set a flag
-    // so the main loop can do something about it:
     if (inChar == '\n') {
       stringComplete = true;
     }
@@ -75,11 +71,19 @@ void printText(String text)
     if(text.length()<16)
     {
       lcd.print(text);
-    }else
+    }else if(text.length()<32)
     {
       lcd.print(text.substring(0,16));
       lcd.setCursor(0,1);
       lcd.print(text.substring(16,32));
       lcd.setCursor(0,0);
+    }else
+    {
+      for(int i=0;i+16<text.length();i++)
+      {
+        lcd.clear();
+        lcd.print(text.substring(i,i+16));
+        delay(1000);
+      }
     }
 }
